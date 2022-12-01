@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
 #include <iostream>
-#define dvi vector<vector<int>>
-#define vi vector<int>
-using std::vector;
 using std::cout;
 using std::endl;
+#define mtx_type double
+typedef std::vector<std::vector<mtx_type>> mtx;
+typedef std::vector<mtx_type> vec;
 
-bool matrix_sum(dvi m1, dvi m2, dvi& destination)
+bool matrix_sum(mtx m1, mtx m2, mtx& destination)
 {
 	if (m1.size() != m2.size()) return false;
 	if (m1[0].size() != m2[0].size()) return false;
@@ -23,7 +23,7 @@ bool matrix_sum(dvi m1, dvi m2, dvi& destination)
 	return true;
 }
 
-bool matrix_sub(dvi m1, dvi m2, dvi& destination)
+bool matrix_sub(mtx m1, mtx m2, mtx& destination)
 {
 	if (m1.size() != m2.size()) return false;
 	if (m1[0].size() != m2[0].size()) return false;
@@ -38,37 +38,40 @@ bool matrix_sub(dvi m1, dvi m2, dvi& destination)
 	}
 	return true;
 }
-bool matrix_mul(dvi m1, dvi m2, dvi& destination)
+bool matrix_mul(mtx m1, mtx m2, mtx& destination)
 {
-	if (m1.size() != m2[0].size()) return false;
-	destination.resize(m1.size());
-	// for (int i = 0; i < m1.size(); i++)
-	// {
-	// 	int sum = 0;
-	// 	destination[i].resize(m1.size());
-	// 	for (int j = 0; j < m1[i].size(); j++)
-	// 	{
-	// 		sum += m1[i][j] + m2[j][i];
-	// 	}
-	// 	a.push_back(sum);
-	// }
 	if (m1[0].size() != m2.size()) return false;
-	destination.resize(//C = []
-	for i in range(len(A)):
-		C += [[]]
-		for j in range(len(B[0])):
-			s = 0
-			for k in range(w):
-				s += A[i][k] * B[k][j]
-			C[i] += [s]
-	return C
-
+	destination.resize(m1.size());
+	for (int i = 0; i < m1.size(); i++)
+	{
+		destination[i].resize(m2[0].size());
+		for (int j = 0; j < m2[0].size(); j++)
+		{
+			mtx_type sum = 0;
+			for (int k = 0; k < m1[0].size(); k++)
+			{
+				sum += m1[i][k] * m2[k][j];
+			}
+			destination[i][j] =  sum;
+		}
+	}
 	return true;
 }
 
-bool mul_matrix_to_n(dvi mtx, int n, dvi& destination);
-bool mul_matrix_to_vector(dvi mtx, vi vec, dvi& destination);
-bool transpose_matrix(dvi source, dvi& destination)
+bool matrix_mul_n(mtx source, int n, mtx& destination)
+{
+	for (int i = 0; i < source.size(); i++)
+	{
+		destination[i].resize(source[i].size());
+		for (int j = 0; j < source[i].size(); j++)
+		{
+			destination[i][j] = source[i][j] * n;
+		}
+	}
+	return true;
+}
+
+bool matrix_transpose(mtx source, mtx& destination)
 {
 	destination.resize(source[0].size());
 	for (int i = 0; i < source[0].size(); i++)
@@ -81,7 +84,72 @@ bool transpose_matrix(dvi source, dvi& destination)
 	}
 	return true;
 }
-bool rank_matrix(const dvi& source);
-bool vector_sum(vi v1, vi v2, vi& destination);
-bool vector_scal_sub(vi v1, vi v2, vi& destination);
-bool vector_vec_mul(vi v1, vi v2, vi& destination);
+
+int matrix_rank(mtx A)
+{
+	const double EPS = 1E-9;
+    int n = A.size();
+    int m = A[0].size();
+
+    int rank = 0;
+    std::vector<bool> row_selected(n, false);
+    for (int i = 0; i < m; i++)
+	{
+        int j;
+        for (j = 0; j < n; j++)
+		{
+            if (!row_selected[j] && abs(A[j][i]) > EPS)
+			{
+                break;
+			}
+        }
+
+        if (j != n)
+		{
+            rank++;
+            row_selected[j] = true;
+            for (int p = i + 1; p < m; ++p)
+			{
+                A[j][p] /= A[j][i];
+			}
+            for (int k = 0; k < n; k++)
+			{
+                if (k != j && abs(A[k][i]) > EPS)
+				{
+                    for (int p = i + 1; p < m; p++)
+					{
+                        A[k][p] -= A[j][p] * A[k][i];
+					}
+                }
+            }
+        }
+    }
+    return rank;
+}
+
+bool vector_sum(vec v1, vec v2, vec& destination)
+{
+	if (v1.size() != v2.size()) return false;
+	for (int i=0; i < v1.size(); i++) 
+	{
+		destination[i] = v1[i] + v2[i];
+	}
+	return true;
+}
+// скалярное произведение векторов
+mtx_type vector_dot(vec v1, vec v2)
+{
+	if (v1.size() != v2.size()) return 0;
+	mtx_type sum = 0;
+	for (int i=0; i < v1.size(); i++) 
+	{
+		sum += v1[i] * v2[i];
+	}
+	return sum;
+}
+// векторное произведение векторов
+bool vector_cross(vec v1, vec v2, vec& destination)
+{
+	if (v1.size() != v2.size()) return false;
+	return true;
+}
