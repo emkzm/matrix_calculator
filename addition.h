@@ -9,8 +9,10 @@ typedef std::vector<mtx_type> vec;
 
 bool matrix_sum(mtx m1, mtx m2, mtx& destination)
 {
+	if (m1.size() == 0 || m2.size() == 0) return false;
 	if (m1.size() != m2.size()) return false;
 	if (m1[0].size() != m2[0].size()) return false;
+
 	destination.resize(m1.size());
 	for (int i = 0; i < m1.size(); i++) 
 	{
@@ -25,6 +27,7 @@ bool matrix_sum(mtx m1, mtx m2, mtx& destination)
 
 bool matrix_sub(mtx m1, mtx m2, mtx& destination)
 {
+	if (m1.size() == 0 || m2.size() == 0) return false;
 	if (m1.size() != m2.size()) return false;
 	if (m1[0].size() != m2[0].size()) return false;
 	destination.resize(m1.size());
@@ -40,6 +43,7 @@ bool matrix_sub(mtx m1, mtx m2, mtx& destination)
 }
 bool matrix_mul(mtx m1, mtx m2, mtx& destination)
 {
+	if (m1.size() == 0 || m2.size() == 0) return false;
 	if (m1[0].size() != m2.size()) return false;
 	destination.resize(m1.size());
 	for (int i = 0; i < m1.size(); i++)
@@ -60,6 +64,7 @@ bool matrix_mul(mtx m1, mtx m2, mtx& destination)
 
 bool matrix_mul_n(mtx source, int n, mtx& destination)
 {
+	if (source.size() == 0) return false;
 	for (int i = 0; i < source.size(); i++)
 	{
 		destination[i].resize(source[i].size());
@@ -73,6 +78,7 @@ bool matrix_mul_n(mtx source, int n, mtx& destination)
 
 bool matrix_transpose(mtx source, mtx& destination)
 {
+	if (source.size() == 0) return false;
 	destination.resize(source[0].size());
 	for (int i = 0; i < source[0].size(); i++)
 	{
@@ -87,6 +93,7 @@ bool matrix_transpose(mtx source, mtx& destination)
 
 int matrix_rank(mtx A)
 {
+	if (A.size() == 0) return 0;
 	const double EPS = 1E-9;
     int n = A.size();
     int m = A[0].size();
@@ -129,6 +136,7 @@ int matrix_rank(mtx A)
 
 bool vector_sum(vec v1, vec v2, vec& destination)
 {
+	if (v1.size() == 0 || v2.size() == 0) return false;
 	if (v1.size() != v2.size()) return false;
 	for (int i=0; i < v1.size(); i++) 
 	{
@@ -139,6 +147,7 @@ bool vector_sum(vec v1, vec v2, vec& destination)
 // скалярное произведение векторов
 mtx_type vector_dot(vec v1, vec v2)
 {
+	if (v1.size() == 0 || v2.size() == 0) return 0;
 	if (v1.size() != v2.size()) return 0;
 	mtx_type sum = 0;
 	for (int i=0; i < v1.size(); i++) 
@@ -150,6 +159,7 @@ mtx_type vector_dot(vec v1, vec v2)
 // векторное произведение векторов
 bool vector_cross(vec v1, vec v2, vec& destination)
 {
+	if (v1.size() == 0 || v2.size() == 0) return false;
 	if (v1.size() != v2.size()) return false;
 	return true;
 }

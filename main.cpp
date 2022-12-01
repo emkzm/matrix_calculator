@@ -28,11 +28,17 @@ int main()
         {1, 2},
         {3, 4}
     };
-    mtx vec3;
+    mtx mtx3;
 
+    mtx m1, m2, m3;
+    
     cout << "\tSUM ";
-    cout << (matrix_sum(mtx1,mtx2,vec3) ? "True" : "False") << endl;
-    print_mtx(vec3);
+    cout << (matrix_sum(m1,m2,m3) ? "True" : "False") << endl;
+    print_mtx(m3);
+
+    // cout << "\tSUM ";
+    // cout << (matrix_sum(mtx1,mtx2,mtx3) ? "True" : "False") << endl;
+    // print_mtx(mtx3);
 
     // cout << "\tSUB ";
     // cout << (matrix_sub(mtx1,mtx2,vec3) ? "True" : "False") << endl;
